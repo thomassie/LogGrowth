@@ -5,8 +5,8 @@ account: thomassie
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 221438
-bundleId: 1008344
+bundleId: 1009166
 url: https://thomassie.shinyapps.io/logisticgrowthtimediscrete/
-when: 1507024594.5798
+when: 1507057486.26327
 asMultiple: FALSE
 asStatic: FALSE

@@ -1,4 +1,4 @@
-# Thomas M. Massie, 02.10.2017, Zurich
+# Thomas M. Massie, 03.10.2017, Zurich
 rm(list = ls())
 
 
@@ -127,11 +127,19 @@ server <- function(input, output) {
     
     # -----------------
     # Cobweb data (-1 in length...)
-    Cobweb <- data.frame(Nt  = Density$PopDens[1:(length(Density$PopDens)-1)],
-                         Ntp = Density$PopDens[2:(length(Density$PopDens))])
+    j <- seq(1, t_stop+1,1)
     
-    Cobweb.noise <- data.frame(Nt  = Density.noise$PopDens[1:(length(Density.noise$PopDens)-1)],
-                               Ntp = Density.noise$PopDens[2:(length(Density.noise$PopDens))])
+    NN <- seq(1,2*(t_stop+1),1)
+    NN[j+j-1] <- Density$PopDens
+    NN[j+j] <- Density$PopDens
+    Cobweb <- data.frame(x = NN[1:length(NN)-1],
+                         y = NN[2:length(NN)])
+    
+    NN.noise <- seq(1,2*(t_stop+1),1)
+    NN.noise[j+j-1] <- Density.noise$PopDens
+    NN.noise[j+j] <- Density.noise$PopDens
+    Cobweb.noise <- data.frame(x = NN.noise[1:length(NN.noise)-1],
+                               y = NN.noise[2:length(NN.noise)])
     
     
     # ---------------
@@ -168,7 +176,7 @@ server <- function(input, output) {
     
     
     cw.simple <- ggplot(data = Cobweb,
-                        aes(x = Nt, y = Ntp)) +
+                        aes(x = x, y = y)) +
       geom_line(alpha = 0.8, 
                 color = col.pal[1]) +
       geom_point(size = 0.3, 
@@ -180,7 +188,7 @@ server <- function(input, output) {
     
     
     cw.noise <- ggplot(data = Cobweb.noise,
-                       aes(x = Nt, y = Ntp)) +
+                       aes(x = x, y = y)) +
       geom_line(alpha = 0.8, 
                 color = col.pal[1]) +
       geom_point(size = 0.3, 
@@ -246,34 +254,40 @@ server <- function(input, output) {
                 labs(x = "Time", y = "Population density",
                      title = "Logistic growth with demographic stochasticity"),  
               ggarrange(ggplot(data = dataInput()[["Cobweb"]],
-                               aes(x = Nt, y = Ntp)) +
-                          geom_line(alpha = 0.8, 
-                                    color = col.pal[1]) +
-                          geom_point(size = 0.3, 
-                                     alpha = 0.8,
-                                     color = col.pal[1]) +
+                               aes(x = x, y = y)) +
                           geom_hline(yintercept = input$K,
                                      color = "#A9A9A9",
                                      size = 0.2) +
                           geom_vline(xintercept = input$K,
                                      color = "#A9A9A9",
                                      size = 0.2) +
+                          geom_abline(slope = 1,
+                                      color = "#A9A9A9",
+                                      size = 0.2) +
+                          geom_line(alpha = 0.8, 
+                                    color = col.pal[1]) +
+                          geom_path(size = 0.3, 
+                                     alpha = 0.8,
+                                     color = col.pal[1]) +
                           theme_classic() +
                           labs(x = "N_{t}", y = "N_{t+1}",
                                title = "Cobweb, simple dynamics"), 
                         ggplot(data = dataInput()[["Cobweb.noise"]],
-                               aes(x = Nt, y = Ntp)) +
-                          geom_line(alpha = 0.8, 
-                                    color = col.pal[6]) +
-                          geom_point(size = 0.3, 
-                                     alpha = 0.8,
-                                     color = col.pal[6]) +
+                               aes(x = x, y = y)) +
                           geom_hline(yintercept = input$K,
                                      color = "#A9A9A9",
                                      size = 0.2) +
                           geom_vline(xintercept = input$K,
                                      color = "#A9A9A9",
                                      size = 0.2) +
+                          geom_abline(slope = 1,
+                                      color = "#A9A9A9",
+                                      size = 0.2) +
+                          geom_path(alpha = 0.8, 
+                                    color = col.pal[6]) +
+                          geom_point(size = 0.3, 
+                                     alpha = 0.8,
+                                     color = col.pal[6]) +
                           theme_classic() +
                           labs(x = "N_{t}", y = "N_{t+1}",
                                title = "Cobweb, stochastic dynamics"),
