@@ -57,7 +57,11 @@ ui <- fluidPage(theme = shinytheme("simplex"),
                                 step = 0.005)
                   ),
                   mainPanel(
-                    plotOutput(outputId = "figure")
+                    plotOutput(
+                      outputId = "figure",
+                      width = "100%",
+                      height = "90vh"
+                      )
                   )
                 )
 )

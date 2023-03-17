@@ -1,0 +1,13 @@
+name: LogGrowth
+title: LogGrowth
+username:
+account: thomassie
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 8594985
+bundleId: 6970519
+url: https://thomassie.shinyapps.io/LogGrowth/
+when: 1679047326.72744
+lastSyncTime: 1679047326.72745
+asMultiple: FALSE
+asStatic: FALSE
